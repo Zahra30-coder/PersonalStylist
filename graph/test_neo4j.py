@@ -12,23 +12,5 @@ driver = GraphDatabase.driver(
     )
 )
 
-try:
-    with driver.session(database="neo4j") as session:
-
-        print("Neo4j Version:")
-        result = session.run("CALL dbms.components()")
-        for record in result:
-            print(record)
-
-        print("\nDatabases:")
-        result = session.run("""
-            SHOW DATABASES
-            YIELD name, currentStatus
-            RETURN name, currentStatus
-        """)
-
-        for record in result:
-            print(record["name"], record["currentStatus"])
-
-finally:
-    driver.close()
+def get_driver():
+    return driver

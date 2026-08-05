@@ -1,24 +1,27 @@
-from neo4j import GraphDatabase
+from math import ceil
 
-
-def import_nodes(driver, label, primary_key, dataframe):
-
-    properties = dataframe.columns.tolist()
-
-    set_clause = ", ".join(
-        [f"n.{col} = ${col}" for col in properties]
-    )
+def import_nodes(driver, label, primary_key, dataframe, batch_size=1000):
 
     query = f"""
-    MERGE (n:{label} {{{primary_key}: ${primary_key}}})
-
-    SET {set_clause}
+    UNWIND $rows AS row
+    MERGE (n:{label} {{{primary_key}: row.{primary_key}}})
+    SET n += row
     """
+    #merge avoids creating duplicate nodes 
+    
+    rows = dataframe.to_dict("records")
+    total = len(rows)
 
     with driver.session(database="neo4j") as session:
 
-        for row in dataframe.to_dict("records"):
+        for i in range(0, total, batch_size):
 
-            session.run(query, **row)
+            batch = rows[i:i + batch_size]
 
-    print(f"{label} imported")
+            print(session.run("RETURN 1").single()[0])
+
+            print(f"{label}: Imported {min(i + batch_size, total)}/{total}")
+
+    print(f"✓ {label} import completed ({total} records)")
+
+    return total
