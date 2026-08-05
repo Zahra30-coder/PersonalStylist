@@ -14,3 +14,11 @@ driver = GraphDatabase.driver(
 
 def get_driver():
     return driver
+
+driver = get_driver()
+
+with driver.session(database="neo4j") as session:
+    count = session.run("MATCH (n) RETURN count(n) AS c").single()["c"]
+    print("Node count:", count)
+
+driver.close()

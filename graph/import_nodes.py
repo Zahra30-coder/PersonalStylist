@@ -1,5 +1,4 @@
 from math import ceil
-
 def import_nodes(driver, label, primary_key, dataframe, batch_size=1000):
 
     query = f"""
@@ -7,8 +6,7 @@ def import_nodes(driver, label, primary_key, dataframe, batch_size=1000):
     MERGE (n:{label} {{{primary_key}: row.{primary_key}}})
     SET n += row
     """
-    #merge avoids creating duplicate nodes 
-    
+
     rows = dataframe.to_dict("records")
     total = len(rows)
 
@@ -18,7 +16,8 @@ def import_nodes(driver, label, primary_key, dataframe, batch_size=1000):
 
             batch = rows[i:i + batch_size]
 
-            print(session.run("RETURN 1").single()[0])
+            # THIS IS THE MISSING LINE
+            session.run(query, rows=batch).consume()
 
             print(f"{label}: Imported {min(i + batch_size, total)}/{total}")
 

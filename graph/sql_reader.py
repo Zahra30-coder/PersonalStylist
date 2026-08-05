@@ -1,7 +1,7 @@
 import pandas as pd
 from database.db import get_connection
 
-def read_table(table_name):
+def read_table(conn, table_name):
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -14,6 +14,6 @@ def read_table(table_name):
     df = pd.DataFrame.from_records(rows, columns=columns)
 
     cursor.close()
-    conn.close()
+    #conn.close()
 
     return df

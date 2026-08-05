@@ -1,47 +1,36 @@
-relationships = [
+from math import ceil
 
-("product_type_no",
- "Product",
- "ProductType",
- "HAS_TYPE"),
+def import_relationships(
+    driver,
+    dataframe,
+    source_label,
+    source_key,
+    target_label,
+    target_key,
+    fk_column,
+    relationship,
+    batch_size=1000,
+):
+    query = f"""
+    UNWIND $rows AS row
 
-("department_no",
- "Product",
- "Department",
- "BELONGS_TO"),
+    MATCH (a:{source_label} {{{source_key}: row.{source_key}}})
+    MATCH (b:{target_label} {{{target_key}: row.{fk_column}}})
 
-("section_no",
- "Product",
- "Section",
- "IN_SECTION"),
+    MERGE (a)-[r:{relationship}]->(b)
+    """
+    rows = dataframe.to_dict("records")
+    total = len(rows)
 
-("garment_group_no",
- "Product",
- "GarmentGroup",
- "HAS_GARMENT_GROUP"),
+    with driver.session(database="neo4j") as session:
 
-("colour_group_code",
- "Product",
- "Colour",
- "HAS_COLOUR"),
+        for i in range(0, total, batch_size):
+            batch = rows[i:i + batch_size]
+            session.run(query, rows=batch).consume()
+            print(
+                f"{relationship}: "
+                f"{min(i + batch_size, total)}/{total}"
+            )
+    print(f"✓ {relationship} completed ({total} relationships)")
+    return total
 
-("perceived_colour_value_id",
- "Product",
- "ColourValue",
- "HAS_COLOUR_VALUE"),
-
-("perceived_colour_master_id",
- "Product",
- "ColourMaster",
- "HAS_COLOUR_MASTER"),
-
-("graphical_appearance_no",
- "Product",
- "GraphicalAppearance",
- "HAS_GRAPHICAL_APPEARANCE"),
-
-("index_code",
- "Product",
- "Index",
- "IN_INDEX")
-]
