@@ -69,7 +69,7 @@ The application leverages a **Hybrid Retrieval-Augmented Generation (RAG)** arch
     (Latency • Tokens • Cost)             (Faithfulness • Recall • Precision)
 ```
 
-# 🏗️ User UI
+# 🏗️ User Prompt Workflow
 
 ```
                             User
@@ -87,40 +87,40 @@ The application leverages a **Hybrid Retrieval-Augmented Generation (RAG)** arch
                      Retrieval Pipeline
 ```
 
-# 🏗️ Graph RAG Setup
+# 🏗️ Graph RAG & Entity Extraction Setup
 
 ```
-1. Clean Dataset
+Clean Dataset
         │
         ▼
-2. Normalize SQL Database
+Normalize SQL Database
         │
         ▼
-3. Create SQL Foreign Keys
+Create SQL Foreign Keys
         │
         ▼
-4. Design Graph Schema
+Design Graph Schema
         │
         ▼
-5. Create Neo4j Constraints
+Create Neo4j Constraints
         │
         ▼
-6. Import Nodes (UNWIND + MERGE)
+Import Nodes (UNWIND + MERGE)
         │
         ▼
-7. Verify Labels
+Verify Labels
         │
         ▼
-8. Import Relationships
+Import Relationships
         │
         ▼
-9. Verify Relationship Counts
+Verify Relationship Counts
         │
         ▼
-10. Visualize Graph
+Visualize Graph
         │
         ▼
-11. Build GraphRAG Retriever
+Build GraphRAG Retriever
 ```
 ---
 
@@ -190,7 +190,7 @@ Example relationships:
 
 ---
 
-# 👗 Recommendation Factors
+# 👗 User Preference Form
 
 * Body Shape
 * Skin Tone
