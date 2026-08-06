@@ -11,8 +11,8 @@ from database.db import get_connection
 
 conn = get_connection()
 
-IMPORT_NODES = True
-IMPORT_RELATIONSHIPS = False
+IMPORT_NODES = False
+IMPORT_RELATIONSHIPS = True
 
 driver = get_driver()
 
@@ -20,7 +20,7 @@ driver = get_driver()
 if IMPORT_NODES:
     total = 0
     TABLES = [
-
+        ("Products","Products","article_id"),
         ("departments","departments","department_no"),
         ("ProductTypes","ProductTypes","product_type_no"),
         ("Appearances","Appearances","graphical_appearance_no"),
@@ -47,13 +47,13 @@ if IMPORT_NODES:
 if IMPORT_RELATIONSHIPS:
 
     print("\nReading Products table...")
-
-    products = read_table("Products")
+    conn = get_connection()
+    products = read_table(conn,"Products")
 
     RELATIONSHIPS = [
 
         (
-            "Product",
+            "Products",
             "article_id",
             "ProductType",
             "product_type_no",
