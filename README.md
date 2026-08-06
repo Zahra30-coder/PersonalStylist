@@ -123,6 +123,19 @@ Visualize Graph
 Build GraphRAG Retriever
 ```
 ---
+## 📊 Neo4j Dashboard
+
+![Neo4j Dashboard](readme_content/neo4j_Dashboard.png)
+
+---
+
+## 🎥 Neo4j Graph Demo
+
+Watch the graph traversal here:
+
+[▶️ Neo4j Graph Demo](readme_content/neo4jGraph.mp4)
+
+---
 
 # 🛠️ Tech Stack
 
