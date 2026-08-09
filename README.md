@@ -9,15 +9,11 @@ The application leverages a **Hybrid Retrieval-Augmented Generation (RAG)** arch
 # 🚀 Features
 
 * 🤖 AI-powered outfit recommendations
+* 🧠 Graph-based Explainable recommendations
 * 💬 Multi-turn conversational chatbot
 * 👤 Personalized user profiles
-* 👗 Occasion-based outfit suggestions
-* ☀️ Weather-aware recommendations
-* 🎨 Skin tone and color matching
-* 📐 Body shape recommendations
+* 👗 Occasion-based & Weather-aware recommendations
 * 🔍 Hybrid semantic + structured search
-* 🧠 Graph-based outfit matching
-* 📝 Explainable recommendations
 * 📊 Langfuse observability
 * ⚡ FastAPI REST APIs
 
