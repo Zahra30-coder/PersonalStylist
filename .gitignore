@@ -1,0 +1,7 @@
+articles.csv
+articles_with_text.csv
+product_documents.csv
+.env
+*.csv
+# Ignore all CSV files
+*.csv
