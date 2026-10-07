@@ -36,41 +36,6 @@ The application leverages a **Hybrid Retrieval-Augmented Generation (RAG)** arch
 
 ---
 
-# 🏗️ Architecture
-
-```
-User query
-    ↓
-LangGraph state
-    │
-    ├── user preferences
-    ├── age
-    ├── gender/target segment
-    ├── occasion
-    ├── color
-    └── clothing requirements
-    ↓
-Extract Constraints
-    ↓
-Structured Filters
-    ↓
-Query construction
-    ↓
-Azure AI Search
-    ├── BM25
-    ├── Vector
-    ├── Hybrid
-    └── Filters
-    ↓
-Candidate Results
-    ↓
-Cross-Encoder Reranker
-    ↓
-Gemini
-    ↓
-Answer
-
-```
 ```text
                                      User
                                        │
@@ -114,28 +79,7 @@ Answer
         Langfuse Tracing                              RAG Evaluation
     (Latency • Tokens • Cost)             (Faithfulness • Recall • Precision)
 ```
-```
-                    Azure SQL
-                       │
-                 product_text
-                       ↓
-              Gemini Embedding
-                       ↓
-               Azure AI Search
-              ┌────────────────┐
-              │ Vector Search  │
-              │ BM25           │
-              │ Hybrid Search  │
-              │ Semantic Rank  │
-              └────────────────┘
-                       ↓
-                Top 20 products
-                       ↓
-              Cross-encoder
-                 reranking
-                       ↓
-                  Gemini LLM
-```
+
 
 # 🏗️ User Prompt Workflow
 
@@ -154,6 +98,64 @@ Answer
                               ▼
                      Retrieval Pipeline
 ```
+# 🏗️ Architecture of Classical RAG
+
+```
+User query
+    ↓
+LangGraph state
+    │
+    ├── user preferences
+    ├── age
+    ├── gender/target segment
+    ├── occasion
+    ├── color
+    └── clothing requirements
+    ↓
+Extract Constraints
+    ↓
+Structured Filters
+    ↓
+Query construction
+    ↓
+Azure AI Search
+    ├── BM25
+    ├── Vector
+    ├── Hybrid
+    └── Filters
+    ↓
+Candidate Results
+    ↓
+Cross-Encoder Reranker
+    ↓
+Gemini
+    ↓
+Answer
+
+```
+
+# 🏗️ Field Update
+
+```
+Azure SQL
+   │
+   ├── Change Tracking / rowversion
+   │
+   ↓
+Change Processor
+   │
+   ├── metadata changed
+   │       ↓
+   │   Azure Search MERGE
+   │
+   └── product_text changed
+           ↓
+       Gemini embedding
+           ↓
+       Update vector + text
+```
+
+For Azure SQL → Azure AI Search, use incremental indexing/change detection, rather than rebuilding the whole index. Azure SQL indexers can use SQL change tracking or a rowversion high-water mark to find changed rows.
 
 # 🏗️ Graph RAG & Entity Extraction Setup
 
