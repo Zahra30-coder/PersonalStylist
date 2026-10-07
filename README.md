@@ -50,6 +50,10 @@ LangGraph state
     ├── color
     └── clothing requirements
     ↓
+Extract Constraints
+    ↓
+Structured Filters
+    ↓
 Query construction
     ↓
 Azure AI Search
@@ -58,7 +62,9 @@ Azure AI Search
     ├── Hybrid
     └── Filters
     ↓
-Reranker
+Candidate Results
+    ↓
+Cross-Encoder Reranker
     ↓
 Gemini
     ↓
